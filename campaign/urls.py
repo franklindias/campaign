@@ -20,6 +20,6 @@ from django.contrib.auth.views import login, logout
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/$', login),
-    url(r'^accounts/logout/$', logout, {'next_page': '/voters/'}),
+    url(r'^accounts/logout/$', logout, {'next_page': '/accounts/login/'}),
     url(r'', include('voters.urls')),
 ]
