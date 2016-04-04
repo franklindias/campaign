@@ -1,0 +1,70 @@
+{% extends "voters/base/base.html" %}
+
+{% block title %}
+Dashboard · CAMPAIGN
+{% endblock %}
+
+{% block style-login %}{% endblock %}
+
+{% block header %}
+{% include "voters/base/header.html" %}
+{% endblock %}
+
+{% block sidebar %}
+{% include "voters/base/sidebar.html" %}
+{% endblock %}
+
+{% block content-header %}
+{% include "voters/base/content-header.html" %}
+{% endblock %}
+
+{% load staticfiles %}
+{% block content %}
+<!-- Main content -->
+<section class="content">
+
+
+      <!-- TABLE: LATEST ORDERS -->
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Pessoas Cadastradas</h3>
+          <div class="box-tools pull-right">
+           <a href="/voters/person/new" class="btn btn-sm btn-primary btn-flat pull-left">
+    
+           Nova Pessoa</a>
+          </div>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+          <div class="table-responsive">
+            <table class="table no-margin">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Contato</th>
+                  <th>Quant. Indicações</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for person in persons %}
+                <tr>
+                  <td><a href="/voters/person/{{person.id}}">{{person.name|upper}}</a></td>
+                  <td>{{person.cellphone|upper}}</td>
+                  <td>{{person.qntIndications}}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div><!-- /.table-responsive -->
+        </div><!-- /.box-body -->
+        <div class="box-footer clearfix">
+       </div><!-- /.box-footer -->
+      </div><!-- /.box -->
+    </div><!-- /.col -->
+
+</section><!-- /.content -->
+{% endblock %}
+
+
+{% block footer %}
+{% include "voters/base/footer.html" %}
+{% endblock %}

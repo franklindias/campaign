@@ -1,0 +1,153 @@
+{% extends "voters/base/base.html" %}
+{% load staticfiles %}
+
+{% load verbose_names %}
+
+{% block title %}
+    Detalhes da Permissão · SISTRAN
+{% endblock %}
+
+{% block css-dashboard %}{% endblock %}
+{% block style-login %}{% endblock %}
+
+{% block wrapper %}
+<div class="wrapper">
+  {% block header %}
+  {% include "voters/base/header.html" %}
+  {% endblock %}
+
+  {% block sidebar %}
+  {% include "voters/base/sidebar.html" %}
+  {% endblock %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    {% block content-header %}
+    <section class="content-header">
+      <h1>
+        Pessoa
+        <small>Detalhes e Consulta de dados</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/"> Pessoa</a></li>
+        <li class="active">Detalhes de Pessoa</li>
+      </ol>
+    </section>
+    {% endblock %}
+
+    {% block content %}
+    <!-- Main content -->
+    <section class="content">
+      <!-- general form elements -->
+      <div class="row">
+        
+      <div class="col-sm-6">
+      {% if person.indication.name != null %}
+      <div class="box box-primary">
+       <div class="box-header with-border">
+          <h3 class="box-title">Quem o Indicou</h3>
+        </div><!-- /.box-header -->
+        <!-- form start -->
+        <div class="box-body">
+
+          <div class="table-responsive">
+            <table class="table no-margin">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Contato</th>
+                  <th>Quant. Indicações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td> <a href='/voters/person/{{person.indication.id}}'>{{ person.indication.name }}</a></td>
+                  <td>{{person.indication.cellphone|upper}}</td>
+                  <td>{{person.indication.qntIndications}}</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+          <br/>
+        </div>
+          <br/>
+        </div>
+        {%else%}
+        <div class="callout callout-warning" style="background-color:#3c8dbc !important; border-color:#2A5B98 !important;">
+                <h4>Essa pessoa não foi indicada por ninguém</h4>
+              </div>
+        {% endif %}
+        <div class="box box-success">
+       <div class="box-header with-border">
+          <h3 class="box-title">Pessoa</h3>
+        </div><!-- /.box-header -->
+        <!-- form start -->
+        <div class="box-body">
+          {% for name, value in person.get_fields %}
+              {% if name != 'id' and name != 'indication' %}
+          <div class="row">
+            <div class="col-sm-2 lbl-featured">
+                {% get_verbose_field_name person name %}
+            </div>
+            <div class="col-sm-10 upper">{{ value|upper }}</div>
+          </div><br/>
+          {% endif %}
+            {% endfor %}
+          <br/>
+        </div>
+          <br/>
+        </div>
+      </div>
+      <div class="col-sm-6">
+             {% if  person.person_set.count > 0 %}
+        <div class="box box-success">
+       <div class="box-header with-border">
+          <h3 class="box-title">Indicadas por Ele</h3>
+        </div><!-- /.box-header -->
+        <!-- form start -->
+        <div class="box-body">
+          <div class="table-responsive">
+            <table class="table no-margin">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Contato</th>
+                  <th>Quant. Indicações</th>
+                </tr>
+              </thead>
+              <tbody>
+       
+              {% for personIndications in person.person_set.all %}
+                <tr>
+                  <td><a href="/voters/person/{{personIndications.id}}">{{personIndications.name|upper}}</a></td>
+                  <td>{{personIndications.cellphone|upper}}</td>
+                  <td>{{personIndications.qntIndications}}</td>
+                </tr>
+                   {% endfor %}
+                {% else %}
+                  <div class="callout callout-danger">
+                      <h4>Essa pessoa não indicou ninguém.</h4>
+                  </div>
+                {% endif %}
+           
+              </tbody>
+            </table>
+          </div>
+        </div>
+          <br/>
+        </div>
+      </div>
+      
+
+      </div><!-- /.box -->
+    </section>
+    {% endblock %}
+  </div>
+  {% block footer %}
+  {% include "voters/base/footer.html" %}
+  {% endblock %}
+</div>
+{% endblock %}
+{% block js-dashboard %}{% endblock %}
