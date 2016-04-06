@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/$', login),
     url(r'^accounts/logout/$', logout, {'next_page': '/accounts/login/'}),
-    url(r'', include('voters.urls')),
+    url(r'', include('campaign.voters.urls')),
 ]
