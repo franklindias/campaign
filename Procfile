@@ -1,1 +1,1 @@
-web: gunicorn educarinova.wsgi --log-file -
+web: gunicorn campaign.wsgi --log-file -
