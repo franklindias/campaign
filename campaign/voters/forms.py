@@ -7,5 +7,5 @@ class PersonForm(forms.ModelForm):
 
     class Meta:
         model = Person
-        exclude = ['id']
+        exclude = ['id', 'city', 'state', 'cityVoting', 'stateVoting']
         fields = ('__all__')

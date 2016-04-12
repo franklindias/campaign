@@ -6,20 +6,28 @@ class Person(models.Model):
 	
 	#identificação
 	name = models.CharField('nome',max_length=100)
-	cpf = models.CharField('CPF', max_length=15,blank=True)
 
 	#contato
 	cellphone = models.CharField('celular', max_length=15)
+	whatsapp = models.CharField('whatsapp', max_length=15)
 	phone = models.CharField('telefone secundario', max_length=15, blank=True)
-	email = models.EmailField('email', max_length=50)
+	email = models.EmailField('email', max_length=50, blank=True)
 	facebook = models.URLField('facebook', max_length=200, blank=True)
 
 	#endereco
-	street = models.CharField('rua', max_length=50)
-	number = models.CharField('número', max_length=6)
-	district = models.CharField('Bairro', max_length=50)
-	city = models.CharField('cidade', max_length=50, default='São Gonçalo do Amarante')
-	state = models.CharField('estado', max_length=2, default='RN')
+	street = models.CharField('rua de residência', max_length=50)
+	number = models.CharField('número de residência', max_length=6)
+	district = models.CharField('Bairro de residência', max_length=50)
+	city = models.CharField('cidade de residência', max_length=50, default='São Gonçalo do Amarante')
+	state = models.CharField('estado de residência', max_length=2, default='RN')
+
+	#endereco votação
+	localNameVoting = models.CharField('Nome do Local de Votação', max_length=50)
+	streetVoting = models.CharField('Rua do Local de Votação', max_length=50)
+	numberVoting = models.CharField('Número do Local de Votação', max_length=6)
+	districtVoting = models.CharField('Bairro do Local de Votação', max_length=50)
+	cityVoting = models.CharField('Cidade do Local de Votação', max_length=50, default='São Gonçalo do Amarante')
+	stateVoting = models.CharField('Estado do Local de Votação', max_length=2, default='RN')
 
 	
 
