@@ -53,7 +53,7 @@ Dashboard · CAMPAIGN
             <table class="table no-margin">
               <thead>
                 <tr>
-                  <th style='width: 10px;'></th>
+                  <th style='width: 100px;'></th>
                   <th>Nome</th>
                   <th>Contato</th>
                   <th>Quant. Indicações</th>
@@ -66,6 +66,9 @@ Dashboard · CAMPAIGN
                   <td> <a class="btn btn-danger btn-sm btn-flat" 
                   href="javascript:deletePerson('{% url "person_remove" pk=person.pk %}')">
                         <i class="fa fa-remove"></i>
+                    </a>
+                     <a class="btn btn-primary btn-sm btn-flat" href="{% url "person_edit" pk=person.pk %}">
+                      <i class="fa fa-pencil"></i>
                     </a>
                   </td>
                   <td><a href="/voters/person/{{person.id}}">{{person.name|upper}}</a></td>

@@ -49,3 +49,25 @@ def person_remove(request, pk):
     person.delete()
 
     return redirect('/voters')
+
+@login_required
+def person_edit(request, pk):
+    person = get_object_or_404(Person, pk=pk)
+
+    if request.method == "POST":
+        formPerson = PersonForm(request.POST, instance=person)
+
+        if formPerson.is_valid():
+
+            person = formPerson.save(commit=False)
+            person.save()
+
+            return redirect('/voters/person/'+str(person.pk))
+        else:
+            return render_to_response('voters/models/person/person_edit.html',
+                {'formPerson': formPerson, 'error':'error'},
+                context_instance=RequestContext(request))
+    else:
+        formPerson = PersonForm(instance=person)
+
+        return render(request, 'voters/models/person/person_edit.html', {'form': formPerson})
