@@ -17,6 +17,8 @@
     <!-- Select2 -->
     <link href="{% static "css/select2.min.css" %}" rel="stylesheet" />
     {% endblock %}
+ 
+
     <!-- Theme style -->
     <link rel="stylesheet" href="{% static "css/AdminLTE.min.css" %}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins -->
@@ -36,6 +38,13 @@
     <!-- jQuery 2.1.4 -->
     <script src="{% static "plugins/jQuery/jQuery-2.1.4.min.js" %}"></script>
     {% endblock %}
+    
+
+    {% block js-extra %}
+    
+    {% endblock %}
+
+
   </head>
   <body class="{% block bodyclass %}hold-transition skin-green sidebar-mini sidebar-collapse{% endblock %}">
     {% block wrapper %}
@@ -65,10 +74,10 @@
     <script src="{% static "plugins/fastclick/fastclick.min.js" %}"></script>
     <!-- AdminLTE App -->
     <script src="{% static "js/app.min.js" %}"></script>
-    <!-- Jets Search Engine -->
+    <!-- Jets Search Engine 
     <script src="{% static "js/jets.min.js" %}"></script>
-    <!-- Script Jets Search Sidebar -->
-    <script src="{% static "js/scripts-jets-search-sidebar.js" %}"></script>
+    <!-- Script Jets Search Sidebar 
+    <script src="{% static "js/scripts-jets-search-sidebar.js" %}"></script> -->
     {% endblock %}
     {% block js-extra-form %}
     <!--jQuery Masked Input -->
@@ -81,8 +90,8 @@
     <script src="{% static "js/scripts-select2.js" %}"></script>
     {% endblock %}
     {% block js-extra-table %}
-    <!-- Script Jets Search Table -->
-    <script src="{% static "js/scripts-jets-search-table.js" %}"></script>
+    <!-- Script Jets Search Table
+    <script src="{% static "js/scripts-jets-search-table.js" %}"></script> -->
     {% endblock %}
     {% block js-dashboard %}
     <!-- Sparkline -->
@@ -94,8 +103,8 @@
     <script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
     <!-- ChartJS 1.0.1 -->
     <script src="{% static "plugins/chartjs/Chart.min.js" %}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{% static "js/pages/dashboard2.js" %}"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) 
+    <script src="{% static "js/pages/dashboard2.js" %}"></script>-->
     <!-- AdminLTE for demo purposes -->
     <script src="{% static "js/demo.js" %}"></script>
     {% endblock %}

@@ -2,7 +2,8 @@ from django.db import models
 
 # Create your models here.
 class Person(models.Model):
-	indication = models.ForeignKey('Person',verbose_name='Indicação', blank=True, null=True)
+	indication = models.ForeignKey('Person',verbose_name='Indicação', blank=True, null=True, 
+		on_delete=models.SET_NULL)
 	
 	#identificação
 	name = models.CharField('nome',max_length=100)

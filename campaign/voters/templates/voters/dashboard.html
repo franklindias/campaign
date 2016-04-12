@@ -14,6 +14,20 @@ Dashboard · CAMPAIGN
 {% include "voters/base/sidebar.html" %}
 {% endblock %}
 
+{% block js-extra %}
+<script type="text/javascript">
+   function deletePerson(url){
+
+      if (confirm("Tem certeza que deseja deletar essa pessoa?\n "+
+        "Todos os seus indicados ficarão sem nenhum vínculo.")) 
+        {
+            document.location = url;
+        }
+    }
+</script>
+{% endblock %}
+
+
 {% block content-header %}
 {% include "voters/base/content-header.html" %}
 {% endblock %}
@@ -39,6 +53,7 @@ Dashboard · CAMPAIGN
             <table class="table no-margin">
               <thead>
                 <tr>
+                  <th style='width: 10px;'></th>
                   <th>Nome</th>
                   <th>Contato</th>
                   <th>Quant. Indicações</th>
@@ -47,6 +62,12 @@ Dashboard · CAMPAIGN
               <tbody>
               {% for person in persons %}
                 <tr>
+
+                  <td> <a class="btn btn-danger btn-sm btn-flat" 
+                  href="javascript:deletePerson('{% url "person_remove" pk=person.pk %}')">
+                        <i class="fa fa-remove"></i>
+                    </a>
+                  </td>
                   <td><a href="/voters/person/{{person.id}}">{{person.name|upper}}</a></td>
                   <td>{{person.cellphone|upper}}</td>
                   <td>{{person.qntIndications}}</td>
@@ -62,6 +83,7 @@ Dashboard · CAMPAIGN
     </div><!-- /.col -->
 
 </section><!-- /.content -->
+
 {% endblock %}
 
 

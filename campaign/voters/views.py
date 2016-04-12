@@ -41,3 +41,11 @@ def person_new(request):
 		formPerson = PersonForm        
 		return render(request, 'voters/models/person/person_edit.html',
             {'form':formPerson})
+
+@login_required
+def person_remove(request, pk):
+
+    person = get_object_or_404(Person, pk=pk)
+    person.delete()
+
+    return redirect('/voters')
