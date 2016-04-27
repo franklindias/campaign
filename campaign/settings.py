@@ -33,18 +33,49 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 
 # Application definition
 
-INSTALLED_APPS = [
+SHARED_APPS = (
+    'tenant_schemas',  # mandatory
+    'campaign.tenants', # you must list the app where your tenant model resides in
+    
+
+    # everything below here is optional
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles'
+)
+
+TENANT_APPS = (
+    # The following Django contrib apps must be in TENANT_APPS
+    'django.contrib.contenttypes',
+    'django.contrib.auth',
+
+    'widget_tweaks',
+
+    # your tenant-specific apps
     'campaign.voters',
-    'widget_tweaks'
-]
+)
+
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+
+#INSTALLED_APPS = [
+    #'django.contrib.admin',
+    #'django.contrib.auth',
+    #'django.contrib.contenttypes',
+    #'django.contrib.sessions',
+    #'django.contrib.messages',
+    #'django.contrib.staticfiles',
+   # 'campaign.voters',
+  #  ,
+ #   'tenant_schemas'
+#]
 
 MIDDLEWARE_CLASSES = [
+    'tenant_schemas.middleware.TenantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,7 +86,12 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'campaign.urls'
+TENANT_MODEL = "tenants.Client" 
+
+ROOT_URLCONF = 'campaign.urls_public'
+
+#PUBLIC_SCHEMA_URLCONF = 'campaign.urls_public'
+
 
 TEMPLATES = [
     {
@@ -79,10 +115,31 @@ WSGI_APPLICATION = 'campaign.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+DATABASE_ROUTERS = (
+    'tenant_schemas.routers.TenantSyncRouter',
+)
+
 default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+
+#DATABASES = {
+#    'default': config('DATABASE_URL', default=default_dburl, cast=dburl),
+#}
+
+#DATABASES = {
+#    'default': config('DATABASE_URL', default=default_dburl, cast=dburl),
+#}
 DATABASES = {
-    'default': config('DATABASE_URL', default=default_dburl, cast=dburl),
+    'default': {
+            'ENGINE': 'tenant_schemas.postgresql_backend',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
+            'PORT': config('DB_PORT')
+        }
 }
+
+
 
 
 # Password validation
@@ -109,13 +166,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pt-br'
 
+SITE_ID = 1
+
 TIME_ZONE = 'America/Recife'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -126,4 +185,3 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 LOGIN_REDIRECT_URL = '/voters/'
-
