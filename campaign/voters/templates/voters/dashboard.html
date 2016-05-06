@@ -50,6 +50,7 @@ Dashboard · CAMPAIGN
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="table-responsive">
+           {% if persons %}
             <table class="table no-margin">
               <thead>
                 <tr>
@@ -59,10 +60,11 @@ Dashboard · CAMPAIGN
                   <th>Quant. Indicações</th>
                 </tr>
               </thead>
+             
               <tbody>
+              
               {% for person in persons %}
                 <tr>
-
                   <td> <a class="btn btn-danger btn-sm btn-flat" 
                   href="javascript:deletePerson('{% url "person_remove" pk=person.pk %}')">
                         <i class="fa fa-remove"></i>
@@ -76,8 +78,13 @@ Dashboard · CAMPAIGN
                   <td>{{person.qntIndications}}</td>
                 </tr>
               {% endfor %}
+            
               </tbody>
+                
             </table>
+            {% else %}
+              <div>Não há pessoas cadastradas</div>
+              {% endif %}
           </div><!-- /.table-responsive -->
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
@@ -88,6 +95,8 @@ Dashboard · CAMPAIGN
 </section><!-- /.content -->
 
 {% endblock %}
+
+
 
 
 {% block footer %}
