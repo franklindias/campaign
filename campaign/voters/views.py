@@ -8,15 +8,19 @@ from .forms import *
 # Create your views here.
 @login_required
 def home(request):
-	persons = Person.objects.all()
-	return render(request, 'voters/dashboard.html', {'persons':persons})
+    markers = [
+        ['-5.7848443', '-35.3267804','Vicente de França'],
+        ['-5.7915004','-35.3288434', 'Câmara dos Vereadores']
+    ]
+    return render(request, 'voters/dashboard.html', {'markers':markers})
 
 @login_required
 def permission_denied(request):
     return render(request, 'voters/permission_denied.html', {}),
 
 def person_list(request):
-	pass
+    persons = Person.objects.all()
+    return render(request, 'voters/models/person/person_list.html', {'persons':persons})
 
 @login_required
 def person_detail(request, pk):

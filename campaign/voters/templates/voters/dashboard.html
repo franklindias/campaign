@@ -1,5 +1,7 @@
 {% extends "voters/base/base.html" %}
 
+{% load easy_maps_tags %}
+
 {% block title %}
 Dashboard · CAMPAIGN
 {% endblock %}
@@ -14,17 +16,29 @@ Dashboard · CAMPAIGN
 {% include "voters/base/sidebar.html" %}
 {% endblock %}
 
-{% block js-extra %}
-<script type="text/javascript">
-   function deletePerson(url){
+{% block css-extra %}
+    <style>
+      .google-maps {
+          position: relative;
+          padding-bottom: 75%; // This is the aspect ratio
+          max-height: 0;
+          overflow: hidden;
+      }
+      .google-maps #map-canvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100% !important;
+          height: 100% !important;
+          max-height: 400px;
+      }
+      #box-body-map{
+          max-height: 420px;
+      }
+    </style>
+{% endblock %}  
 
-      if (confirm("Tem certeza que deseja deletar essa pessoa?\n "+
-        "Todos os seus indicados ficarão sem nenhum vínculo.")) 
-        {
-            document.location = url;
-        }
-    }
-</script>
+{% block js-extra %}
 {% endblock %}
 
 
@@ -37,66 +51,114 @@ Dashboard · CAMPAIGN
 <!-- Main content -->
 <section class="content">
 
+<div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua">
+            <i class="fa fa-users"></i></span>
 
-      <!-- TABLE: LATEST ORDERS -->
-      <div class="box box-success">
-        <div class="box-header with-border">
-          <h3 class="box-title">Pessoas Cadastradas</h3>
-          <div class="box-tools pull-right">
-           <a href="/voters/person/new" class="btn btn-sm btn-primary btn-flat pull-left">
-    
-           Nova Pessoa</a>
+            <div class="info-box-content">
+              <span class="info-box-text">Pessoas Cadastradas</span>
+              <span class="info-box-number">90</span>
+            </div>
+            <!-- /.info-box-content -->
           </div>
-        </div><!-- /.box-header -->
-        <div class="box-body">
-          <div class="table-responsive">
-           {% if persons %}
-            <table class="table no-margin">
-              <thead>
-                <tr>
-                  <th style='width: 100px;'></th>
-                  <th>Nome</th>
-                  <th>Contato</th>
-                  <th>Quant. Indicações</th>
-                </tr>
-              </thead>
-             
-              <tbody>
-              
-              {% for person in persons %}
-                <tr>
-                  <td> <a class="btn btn-danger btn-sm btn-flat" 
-                  href="javascript:deletePerson('{% url "person_remove" pk=person.pk %}')">
-                        <i class="fa fa-remove"></i>
-                    </a>
-                     <a class="btn btn-primary btn-sm btn-flat" href="{% url "person_edit" pk=person.pk %}">
-                      <i class="fa fa-pencil"></i>
-                    </a>
-                  </td>
-                  <td><a href="/voters/person/{{person.id}}">{{person.name|upper}}</a></td>
-                  <td>{{person.cellphone|upper}}</td>
-                  <td>{{person.qntIndications}}</td>
-                </tr>
-              {% endfor %}
-            
-              </tbody>
-                
-            </table>
-            {% else %}
-              <div>Não há pessoas cadastradas</div>
-              {% endif %}
-          </div><!-- /.table-responsive -->
-        </div><!-- /.box-body -->
-        <div class="box-footer clearfix">
-       </div><!-- /.box-footer -->
-      </div><!-- /.box -->
-    </div><!-- /.col -->
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red">
+            <i class="fa fa-paper-plane"></i></span>
 
-</section><!-- /.content -->
+            <div class="info-box-content">
+              <span class="info-box-text">SMS Enviados</span>
+              <span class="info-box-number">5.300</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green">
+            <i class="fa fa-building"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Locais de Votação</span>
+              <span class="info-box-number">15</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Locais de Votação - São Gonçalo do Amarante</h3>
+            </div>
+            <div class="box-body" id="box-body-map">
+                <div class="google-maps">
+                    <div id="map-canvas" class="easy-map-googlemap"  >
+                    </div>
+                  
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+</section>
+
+  <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+
+   <script type="text/javascript">
+   var map;
+    function initialize_map() {       
+        var latlng = new google.maps.LatLng(-5.7848443, -35.3267804);
+        var mapElem = document.getElementById("map-canvas");
+            var mapOptions = {
+                zoom: 13,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+             map = new google.maps.Map(mapElem, mapOptions);
+
+             {% for marker in markers %}
+
+              var marker = new google.maps.Marker({
+                position: new google.maps.LatLng({{marker.0}}, {{marker.1}}),
+                map: map,
+                title: "{{marker.2}}"
+              });
+
+              marker['infowindow']  = new google.maps.InfoWindow({
+                     content: "<h3>{{marker.2}}</h3><h5><i class='fa fa-user' style='margin-right:5px;'></i>22 Pessoas votam aqui</h5>",});
+              google.maps.event.addListener(marker, 'click', function() {
+                  //window.location.href = this.url;
+                   this['infowindow'].open(map, this);
+              });
+             google.maps.event.addListener(marker, 'mouseover', function() {
+                  // this['infowindow'].open(map, this);
+                      });
+             google.maps.event.addListener(marker, 'mouseout', function() {
+                  // this['infowindow'].close(map, this);
+
+              });
+              {% endfor %}
+    }
+        // initialize the map after page loading
+        google.maps.event.addDomListener(window, 'load', initialize_map);
+ 
+  </script>
 
 {% endblock %}
-
-
 
 
 {% block footer %}

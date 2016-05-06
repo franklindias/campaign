@@ -36,6 +36,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 SHARED_APPS = (
     'tenant_schemas',  # mandatory
     'campaign.tenants', # you must list the app where your tenant model resides in
+    'easy_maps',
     
 
     # everything below here is optional
@@ -79,7 +80,6 @@ TENANT_MODEL = "tenants.Client"
 ROOT_URLCONF = 'campaign.urls_public'
 
 #PUBLIC_SCHEMA_URLCONF = 'campaign.urls_public'
-
 
 TEMPLATES = [
     {
