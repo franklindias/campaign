@@ -94,10 +94,23 @@ Dashboard · CAMPAIGN
           </div>
           <!-- /.info-box -->
         </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green">
+            <i class="fa fa-money"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Valor em Aberto</span>
+              <span class="info-box-number">R$ 32,52</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
       </div>
 
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
           <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Locais de Votação - São Gonçalo do Amarante</h3>
@@ -123,7 +136,7 @@ Dashboard · CAMPAIGN
         var latlng = new google.maps.LatLng(-5.7848443, -35.3267804);
         var mapElem = document.getElementById("map-canvas");
             var mapOptions = {
-                zoom: 13,
+                zoom: 14,
                 center: latlng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
@@ -135,7 +148,9 @@ Dashboard · CAMPAIGN
               var marker = new google.maps.Marker({
                 position: new google.maps.LatLng({{marker.0}}, {{marker.1}}),
                 map: map,
-                title: "{{marker.2}}"
+                title: "{{marker.2}}",
+                icon: "https://maps.google.com/mapfiles/kml/shapes/schools_maps.png",
+                animation: google.maps.Animation.DROP
               });
 
               marker['infowindow']  = new google.maps.InfoWindow({
