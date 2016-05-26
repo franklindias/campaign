@@ -7,6 +7,14 @@ class Person(models.Model):
 	
 	#identificação
 	name = models.CharField('nome',max_length=100)
+	dataNascimento = models.DateField("Data de Nascimento", auto_now=False, auto_now_add=False)
+
+	CHOICE_VEICULO = (
+		(False, 'Não'),
+		(True, 'Sim')
+	)
+
+	veiculo = models.BooleanField("Vai precisar de Veículo?", default=False, choices=CHOICE_VEICULO)
 
 	#contato
 	cellphone = models.CharField('celular', max_length=15, blank=True)
@@ -25,7 +33,9 @@ class Person(models.Model):
 	localNameVoting = models.CharField('Nome do Local de Votação', max_length=50)
 	districtVoting = models.CharField('Bairro do Local de Votação', max_length=50)
 
-	
+	zona = models.CharField('Zona de Votação', max_length=100, default="51ª ZONA ELEITORAL")
+	sessao = models.CharField('Sessão de Votação', max_length=5)
+
 
 	def __str__(self):
 		return self.name
