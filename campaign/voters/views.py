@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
 from django.template import RequestContext
+import datetime
 from .models import Person
 from .forms import *
 
@@ -8,11 +9,17 @@ from .forms import *
 # Create your views here.
 @login_required
 def home(request):
+    today = datetime.date.today()
+
     markers = [
         ['-5.7848443', '-35.3267804','Vicente de França'],
         ['-5.7915004','-35.3288434', 'Câmara dos Vereadores']
     ]
-    return render(request, 'voters/dashboard.html', {'markers':markers})
+
+    q_persons = Person.objects.all().count()
+    aniversariantes = Person.objects.filter(dataNascimento__month=today.month)
+
+    return render(request, 'voters/dashboard.html', {'markers':markers, 'q_persons':q_persons, 'aniversariantes':aniversariantes})
 
 @login_required
 def permission_denied(request):
