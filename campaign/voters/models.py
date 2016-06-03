@@ -24,10 +24,10 @@ class Person(models.Model):
 	facebook = models.URLField('facebook', max_length=200, blank=True)
 
 	#endereco
-	street = models.CharField('rua de residência', max_length=50)
+	street = models.CharField('Rua/Nº de residência', max_length=50)
 	district = models.CharField('Bairro de residência', max_length=50)
-	city = models.CharField('cidade de residência', max_length=50, default='São Gonçalo do Amarante')
-	state = models.CharField('estado de residência', max_length=2, default='RN')
+	city = models.CharField('Cidade de residência', max_length=50, default='São Gonçalo do Amarante')
+	state = models.CharField('UF de residência', max_length=2, default='RN')
 
 	#endereco votação
 	localNameVoting = models.CharField('Nome do Local de Votação', max_length=50)
@@ -36,6 +36,14 @@ class Person(models.Model):
 	zona = models.CharField('Zona de Votação', max_length=100, default="51ª ZONA ELEITORAL")
 	sessao = models.CharField('Sessão de Votação', max_length=5)
 
+	def get_all_children(self, include_self=True):
+		r = []
+		if include_self:
+			r.append(self.name)
+		for c in Person.objects.filter(indication=self):
+			r.append(c.get_all_children(include_self=False))
+		
+		return r
 
 	def __str__(self):
 		return self.name

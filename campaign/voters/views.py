@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404, render_to_response
+from django.shortcuts import render, redirect, get_object_or_404, render_to_response, HttpResponse
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
 from django.template import RequestContext
 import datetime
 from .models import Person
 from .forms import *
+import json
+from django.core import serializers
 
 
 # Create your views here.
@@ -82,3 +84,45 @@ def person_edit(request, pk):
         formPerson = PersonForm(instance=person)
 
         return render(request, 'voters/models/person/person_edit.html', {'form': formPerson})
+
+def person_graph(request):
+    return render(request, 'voters/graph.html', {})
+
+
+def draw(p):
+
+    r2 = {
+         'id': '',
+         'name': '', 
+         'data':{},   
+         'children':[]
+         }
+
+    indications = p.person_set.all().order_by('id')
+
+    r2['id'] = "n"+str(p.id)
+    r2['name'] = p.name.partition(' ')[0].upper()
+    
+
+    if indications.count() > 0:
+        for i in indications:
+            r2['children'].append(draw(i))   
+
+    return r2
+
+
+@login_required
+def gerenate(request):
+    pessoas = Person.objects.filter(indication=None).order_by('id')
+
+    r = {
+         'id':'n0',
+         'name': 'LÍDERES',
+         'data':{},
+         'children':[]
+         }
+
+    for pessoa in pessoas:
+        r['children'].append(draw(pessoa))
+
+    return HttpResponse(json.dumps(r), content_type='application/json')

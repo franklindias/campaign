@@ -11,5 +11,7 @@ urlpatterns = [
 	            url(r'^$', views.person_list, name='person_list'),
 				url(r'^(?P<pk>[0-9]+)/remove/$', views.person_remove, name='person_remove'),
 				url(r'^(?P<pk>[0-9]+)/edit/$', views.person_edit, name='person_edit'),
-	        ]))
+				url(r'^graph/$', views.person_graph, name='person_graph')
+	        ])),
+	   	url(r'^json', views.gerenate)
 ]
