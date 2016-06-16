@@ -8,7 +8,7 @@ class PersonForm(forms.ModelForm):
 
     class Meta:
         model = Person
-        exclude = ['id', 'city', 'state', 'cityVoting', 'stateVoting']
+        exclude = ['id', 'cityVoting', 'stateVoting']
         fields = ('__all__')
         widgets = { 'dataNascimento': forms.DateInput(format=('%d-%m-%Y'), 
                                              attrs={'placeholder':'dd/MM/AAAA'}),

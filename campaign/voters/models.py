@@ -9,25 +9,22 @@ class Person(models.Model):
 	name = models.CharField('nome',max_length=100)
 	dataNascimento = models.DateField("Data de Nascimento", auto_now=False, auto_now_add=False)
 
-	CHOICE_VEICULO = (
-		(False, 'Não'),
-		(True, 'Sim')
-	)
 
-	veiculo = models.BooleanField("Vai precisar de Veículo?", default=False, choices=CHOICE_VEICULO)
+	qnt_veiculo = models.IntegerField("Quantidade de Veículos", default=0)
+	qnt_combustivel = models.IntegerField("Quantidade de Combustível", default=0)
 
 	#contato
 	cellphone = models.CharField('celular', max_length=15, blank=True)
 	whatsapp = models.CharField('whatsapp', max_length=15, blank=True)
-	phone = models.CharField('telefone secundario', max_length=15, blank=True)
+	phone = models.CharField('telefone Secundario', max_length=15, blank=True)
 	email = models.EmailField('email', max_length=50, blank=True)
-	facebook = models.URLField('facebook', max_length=200, blank=True)
+	facebook = models.CharField('Usuário do Facebook', max_length=200, blank=True)
 
 	#endereco
-	street = models.CharField('Rua/Nº de residência', max_length=50)
-	district = models.CharField('Bairro de residência', max_length=50)
-	city = models.CharField('Cidade de residência', max_length=50, default='São Gonçalo do Amarante')
-	state = models.CharField('UF de residência', max_length=2, default='RN')
+	street = models.CharField('Rua/Nº de Residência', max_length=50)
+	district = models.CharField('Bairro de Residência', max_length=50)
+	city = models.CharField('Cidade de Residência', max_length=50, default='São Gonçalo do Amarante')
+	state = models.CharField('UF de Residência', max_length=2, default='RN')
 
 	#endereco votação
 	localNameVoting = models.CharField('Nome do Local de Votação', max_length=50)

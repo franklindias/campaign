@@ -143,7 +143,7 @@ Dashboard · CAMPAIGN
               {% for aniversariante in aniversariantes %}
                 <tr>
                  <td>{{aniversariante.name|upper}}</td>
-                  <td>{{aniversariante.dataNascimento|upper}}</td>
+                  <td>{{aniversariante.dataNascimento|date:"d/m/Y" }}</td>
                 </tr>
               {% endfor %}
             
