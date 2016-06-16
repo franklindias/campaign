@@ -48,8 +48,7 @@ Dashboard · CAMPAIGN
            Nova Pessoa</a>
           </div>
         </div><!-- /.box-header -->
-        <div class="box-body">
-          <div class="table-responsive">
+        <div class="box-body table-responsive">
            {% if persons %}
             <table class="table no-margin">
               <thead>
@@ -85,9 +84,106 @@ Dashboard · CAMPAIGN
             {% else %}
               <div>Não há pessoas cadastradas</div>
               {% endif %}
-          </div><!-- /.table-responsive -->
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
+          <div class="row">
+            <div class="col-xs-5 col-sm-7 mg-t-06">
+              <span>
+                Mostrando {{ persons.start_index }} até {{ persons.end_index }} de {{ persons.paginator.count }} registros
+              </span>
+            </div>
+            <div class="col-xs-7 col-sm-5">
+              <nav>
+                <ul class="pager txt-rgt mg-t-0 mg-b-0">
+                  <li class="{% if not persons.has_previous %}disabled{% endif %}">
+                    <a class="btn-pagination" href="?q={{query}}&page={% if persons.has_previous %}{{ persons.previous_page_number }}{% endif %}" aria-label="Anterior">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+
+                  {% if persons.paginator.num_pages < 12 %}
+                    {% for page in persons.paginator.page_range %}
+                      <li class="{% if persons.number == page %}active{% endif %}">
+                        <a class="btn-pagination" href="?q={{ query }}&page={{ page }}">{{ page }}</a>
+                      </li>
+                    {% endfor %}
+                  {% else %}
+                    {% if persons.number >= 1 and persons.number < 5 %}
+                      {% for page in persons.paginator.page_range %}
+                        {% if page <= 5 %}
+                          <li class="{% if persons.number == page %}active{% endif %}">
+                            <a class="btn-pagination" href="?q={{query}}&page={{ page }}">{{ page }}</a>
+                          </li>
+                        {% endif %}
+                      {% endfor %}
+                      <li class="disabled">
+                        <a class="btn-pagination">...</a>
+                      </li>
+                      <li class="
+                        {% if persons.number == persons.paginator.num_pages %}
+                          active
+                        {% endif %}">
+                        <a class="btn-pagination" href="?q={{ query }}&page={{ persons.paginator.num_pages }}">
+                          {{ persons.paginator.num_pages }}
+                        </a>
+                      </li>
+                    {% elif persons.number >= 5 and persons.number < persons.paginator.num_pages|add:"-3" %}
+                      <li class="{% if persons.number == page %}active{% endif %}">
+                        <a class="btn-pagination" href="?page=1">1</a>
+                      </li>
+                      <li class="disabled">
+                        <a class="btn-pagination">...</a>
+                      </li>
+                      {% for page in persons.paginator.page_range %}
+                        {% if page == persons.number %}
+                          <li class="{% if persons.number == persons.previous_page_number %}active{% endif %}">
+                            <a class="btn-pagination" href="?page={{ persons.previous_page_number }}">{{ persons.previous_page_number }}</a>
+                          </li>
+                          <li class="{% if persons.number == page %}active{% endif %}">
+                            <a class="btn-pagination" href="?q={{query}}&page={{ page }}">{{ page }}</a>
+                          </li>
+                          <li class="{% if persons.number == persons.next_page_number %}active{% endif %}">
+                            <a class="btn-pagination" href="?page={{ persons.next_page_number }}">{{ persons.next_page_number }}</a>
+                          </li>
+                        {% endif %}
+                      {% endfor %}
+                      <li class="disabled">
+                        <a class="btn-pagination">...</a>
+                      </li>
+                      <li class="
+                        {% if persons.number == persons.paginator.num_pages %}
+                          active
+                        {% endif %}">
+                        <a class="btn-pagination" href="?q={{ query }}&page={{ persons.paginator.num_pages }}">
+                          {{ persons.paginator.num_pages }}
+                        </a>
+                      </li>
+                    {% elif persons.paginator.num_pages|add:"-3" >= 1 and persons.number <= persons.paginator.num_pages %}
+                      <li class="{% if persons.number == page %}active{% endif %}">
+                        <a class="btn-pagination" href="?page=1">1</a>
+                      </li>
+                      <li class="disabled">
+                        <a class="btn-pagination">...</a>
+                      </li>
+                      {% for page in persons.paginator.page_range %}
+                        {% if page >= persons.paginator.num_pages|add:"-4" %}
+                          <li class="{% if persons.number == page %}active{% endif %}">
+                            <a class="btn-pagination" href="?q={{query}}&page={{ page }}">{{ page }}</a>
+                          </li>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  {% endif %}
+                  <li class="{% if not persons.has_next %}disabled{% endif %}">
+                    <a class="btn-pagination" href="?q={{query}}&page={% if persons.has_next %}{{ persons.next_page_number }}{% endif %}" aria-label="Próximo">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
        </div><!-- /.box-footer -->
       </div><!-- /.box -->
     </div><!-- /.col -->

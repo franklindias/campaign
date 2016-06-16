@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response, HttpResponse
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 import datetime
 from .models import Person
@@ -28,8 +29,27 @@ def permission_denied(request):
     return render(request, 'voters/permission_denied.html', {}),
 
 def person_list(request):
-    persons = Person.objects.all()
-    return render(request, 'voters/models/person/person_list.html', {'persons':persons})
+
+    query = request.GET.get('q')
+
+    if query is None:
+        query = ''
+
+    persons_un = Person.objects.all()
+    persons = sorted(persons_un, key= lambda t: t.qntIndications(), reverse=True)
+
+
+    paginator = Paginator(persons, 10)
+
+    page = request.GET.get('page')
+    try:
+        persons_p = paginator.page(page)
+    except PageNotAnInteger:
+        persons_p = paginator.page(1)
+    except EmptyPage:
+        persons_p = paginator.page(paginator.num_pages)
+
+    return render(request, 'voters/models/person/person_list.html', {'persons':persons_p, 'query':query})
 
 @login_required
 def person_detail(request, pk):
