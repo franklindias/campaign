@@ -28,6 +28,7 @@ def home(request):
 def permission_denied(request):
     return render(request, 'voters/permission_denied.html', {}),
 
+@login_required
 def person_list(request):
 
     query = request.GET.get('q')
@@ -105,10 +106,11 @@ def person_edit(request, pk):
 
         return render(request, 'voters/models/person/person_edit.html', {'form': formPerson})
 
+@login_required
 def person_graph(request):
     return render(request, 'voters/graph.html', {})
 
-
+@login_required
 def draw(p):
 
     r2 = {
