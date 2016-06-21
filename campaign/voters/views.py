@@ -111,7 +111,7 @@ def person_graph(request):
     return render(request, 'voters/graph.html', {})
 
 @login_required
-def draw(p):
+def draw(request, p):
 
     r2 = {
          'id': '',
@@ -128,7 +128,7 @@ def draw(p):
 
     if indications.count() > 0:
         for i in indications:
-            r2['children'].append(draw(i))   
+            r2['children'].append(draw(request, i))   
 
     return r2
 
@@ -145,6 +145,6 @@ def gerenate(request):
          }
 
     for pessoa in pessoas:
-        r['children'].append(draw(pessoa))
+        r['children'].append(draw(request, pessoa))
 
     return HttpResponse(json.dumps(r), content_type='application/json')
